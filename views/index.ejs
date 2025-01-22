@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Land</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#2A2535] text-white">
+    <div class="flex">
+        <!-- Left Sidebar -->
+        <aside class="w-64 h-screen p-4 border-r border-gray-700">
+            <div class="mb-8">
+                <h1 class="text-2xl font-bold">Anime<span class="text-purple-500">Land</span></h1>
+            </div>
+            <nav class="space-y-4">
+                <a href="#" class="flex items-center space-x-3 text-gray-300 hover:text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                    </svg>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 text-gray-300 hover:text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    <span>Trending</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 text-gray-300 hover:text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                    </svg>
+                    <span>Watch List</span>
+                </a>
+                <!-- Add more menu items as needed -->
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1">
+            <!-- Hero Section -->
+            <div class="relative h-[400px]">
+                <div class="absolute inset-0 bg-gradient-to-r from-[#2A2535] via-transparent to-transparent z-10"></div>
+                <img src="https://image.tmdb.org/t/p/w800<%= topAnime.poster_path %>" alt="<%= topAnime.name %>" class="w-full h-full object-cover">
+                <div class="absolute bottom-8 left-8 z-20">
+                    <div class="flex items-center space-x-2 mb-2">
+                        <span class="text-sm text-gray-300">Season 1</span>
+                        <span class="text-sm text-gray-300">• <%= new Date(topAnime.first_air_date).getFullYear() %></span>
+                    </div>
+                    <h2 class="text-4xl font-bold mb-2"><%= topAnime.name %></h2>
+                    <div class="flex items-center space-x-1 mb-4">
+                        <span class="text-yellow-400">
+                            <%= '★'.repeat(Math.round(topAnime.vote_average / 2)) %>
+                            <%= '☆'.repeat(5 - Math.round(topAnime.vote_average / 2)) %>
+                        </span>
+                    </div>
+                    <p class="max-w-xl text-gray-300 mb-4">
+                        <%= topAnime.overview %>
+                    </p>
+                    <button class="bg-purple-600 hover:bg-purple-700 px-6 py-2 rounded-full">
+                        Stream
+                    </button>
+                </div>
+            </div>
+
+            <!-- Anime Section -->
+            <div class="p-8">
+                <h3 class="text-xl font-semibold mb-4">Popular Anime</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <% animeShows.forEach(show => { %>
+                        <div class="relative rounded-lg overflow-hidden">
+                            <img src="https://image.tmdb.org/t/p/w300<%= show.poster_path %>" alt="<%= show.name %>" class="w-full h-[150px] object-cover">
+                            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black">
+                                <h4 class="font-semibold"><%= show.name %></h4>
+                                <p class="text-sm text-gray-300">Rating: <%= show.vote_average %></p>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Sidebar -->
+        <aside class="w-80 p-4 border-l border-gray-700">
+            <h3 class="text-xl font-semibold mb-4">Latest Anime Releases</h3>
+            <div class="space-y-4">
+                <% latestAnime.forEach(anime => { %>
+                    <a href="https://www.themoviedb.org/tv/<%= anime.id %>" target="_blank" class="flex space-x-3 items-center">
+                        <img src="https://image.tmdb.org/t/p/w70<%= anime.poster_path %>" alt="<%= anime.name %>" class="w-16 h-24 object-cover rounded">
+                        <div>
+                            <h4 class="font-semibold"><%= anime.name %></h4>
+                            <div class="flex items-center space-x-1 mb-4">
+                                <span class="text-yellow-400">
+                                    <%= '★'.repeat(Math.round(anime.vote_average / 2)) %>
+                                    <%= '☆'.repeat(5 - Math.round(anime.vote_average / 2)) %>
+                                </span>
+                            </div>
+                            <p class="text-sm text-gray-300">First Aired: <%= anime.first_air_date %></p>
+                            <p class="text-sm text-gray-300">Relative Time: <%= anime.relativeTime %></p>
+                        </div>
+                    </a>
+                <% }) %>
+            </div>
+            <button class="w-full mt-4 bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-full">
+                See More
+            </button>
+        </aside>
+    </div>
+</body>
+</html> 
